@@ -13,7 +13,7 @@ func InitDB() {
 
 	connStr := "user=youruser dbname=takahara-morpet sslmode=disable"
 	DB, err = sql.Open("postgres", connStr)
-	
+
 	if err != nil {
 		log.Fatal("Failed to connect DB", err)
 	}
@@ -21,5 +21,14 @@ func InitDB() {
 	if err := DB.Ping(); err != nil {
 		log.Fatal("Databse connetction error", err)
 	}
-	log.Println("databse connected")
+	log.Println("Databse connected")
+}
+
+func CloseDB() {
+    if DB != nil {
+        err := DB.Close()
+        if err != nil {
+            log.Println("Failed to close DB", err)
+        }
+    }
 }
