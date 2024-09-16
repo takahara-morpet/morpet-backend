@@ -1,8 +1,6 @@
-# ローカル環境での PostgreSQL 接続および動作確認
+## ローカル環境での PostgreSQL 接続および動作確認
 
 ローカルで PostgreSQL と繋げられるように設定済み。動作確認も完了していますが、現時点では自動でテーブルの作成は行えません。詳細は以下をご参照ください。なお、質問がある場合は中安に問い合わせてください。
-
-## 動作確認手順
 
 ### 前提条件
 
@@ -55,3 +53,18 @@
 4. **Go サイドで確認**  
    ブラウザで以下にアクセス：
    http://localhost:8080/users
+
+## API 仕様
+
+API 仕様は SwaggerUI を利用して閲覧します。
+
+```
+$ docker compose up swagger-ui
+```
+
+を実行することでローカルの Docker 上に SwaggerUI サーバが起動します。<br>
+<br>
+SwaggerUI サーバ起動後以下の URL から SwaggerUI へアクセスすることができます。
+
+SwaggerUI: <http://localhost:8000/> <br>
+定義ファイル: `./api-document.yaml`<br>
