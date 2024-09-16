@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
+	"morpet-backend/handlers/dto"
 	"morpet-backend/services"
 	"net/http"
 
@@ -17,4 +19,29 @@ func GetUsers(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, users)
+}
+
+func CreateUser(c echo.Context) error {
+	req := &dto.CreateUserRequest{}
+	if err := c.Bind(req); err != nil {
+		return err
+	}
+	if err := services.CreateUser(req); err != nil {
+		return fmt.Errorf("ユーザの作成に失敗しました:%s", err)
+	}
+	return c.NoContent(http.StatusOK)
+
+}
+
+func UpdateUser(c echo.Context) error {
+	req := &dto.UpdateUserRequest{}
+	if err := c.Bind(req); err != nil {
+		return err
+	}
+	id := c.Param("id")
+	err := services.UpdateUser(id, req)
+	if err != nil {
+		return fmt.Errorf("error updating user: %s", err)
+	}
+	return c.NoContent(http.StatusOK)
 }
