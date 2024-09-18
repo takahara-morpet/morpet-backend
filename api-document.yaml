@@ -5,7 +5,7 @@ info:
 servers:
   - url: http://localhost:8080/
 paths:
-  /user:
+  /users:
     post:
       summary: "Create user"
       operationId: "createUser"
@@ -19,14 +19,21 @@ paths:
                 name:
                   type: string
                 age:
-                  type: int
+                  type: integer
                   default: 20
+                profile:
+                  type: string
+                profile_image_url:
+                  type: string
+                gender:
+                  type: string
+                mbti:
+                  type: string
       responses:
         "200":
           description: "User created"
         "400":
           description: "Invalid input"
-  /users:
     get:
       summary: "Get list of users"
       operationId: "getUsers"
@@ -44,21 +51,35 @@ paths:
                       type: object
                       properties:
                         id:
-                          type: string
+                          type: integer
                         name:
                           type: string
-                        status:
+                        age:
+                          type: integer
+                        profile:
                           type: string
+                        profile_image_url:
+                          type: string
+                        gender:
+                          type: string
+                        mbti:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
   /users/{userId}:
     put:
-      summary: "Update user status"
+      summary: "Update user profile"
       operationId: "updateUser"
       parameters:
         - name: userId
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:
@@ -66,9 +87,18 @@ paths:
             schema:
               type: object
               properties:
+                name:
+                  type: string
                 age:
-                  type: int
-                  default: 20
+                  type: integer
+                profile:
+                  type: string
+                profile_image_url:
+                  type: string
+                gender:
+                  type: string
+                mbti:
+                  type: string
       responses:
         "200":
           description: "User updated"
@@ -76,3 +106,135 @@ paths:
           description: "Invalid input"
         "404":
           description: "User not found"
+  /posts:
+    post:
+      summary: "Create post"
+      operationId: "createPost"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                content:
+                  type: string
+      responses:
+        "200":
+          description: "Post created"
+        "400":
+          description: "Invalid input"
+    get:
+      summary: "Get list of posts"
+      operationId: "getPosts"
+      responses:
+        "200":
+          description: "A list of posts"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        content:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+  /posts/{postId}:
+    get:
+      summary: "Get post details"
+      operationId: "getPostDetails"
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Post details"
+        "404":
+          description: "Post not found"
+  /likes:
+    post:
+      summary: "Like a post"
+      operationId: "likePost"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                post_id:
+                  type: integer
+      responses:
+        "200":
+          description: "Post liked"
+        "400":
+          description: "Invalid input"
+  /replys:
+    post:
+      summary: "Reply to a post"
+      operationId: "createReply"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sender_id:
+                  type: integer
+                post_id:
+                  type: integer
+                content:
+                  type: string
+      responses:
+        "200":
+          description: "Reply created"
+        "400":
+          description: "Invalid input"
+    get:
+      summary: "Get list of replies"
+      operationId: "getReplies"
+      responses:
+        "200":
+          description: "A list of replies"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  replies:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        sender_id:
+                          type: integer
+                        post_id:
+                          type: integer
+                        content:
+                          type: string
+                        sent_at:
+                          type: string
+                          format: date-time
