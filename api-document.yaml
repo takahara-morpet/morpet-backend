@@ -146,53 +146,57 @@ paths:
         "404":
           description: "User not found"
   /posts:
-    post:
-      summary: "Create post"
-      operationId: "createPost"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                userId:
-                  type: integer
-                content:
-                  type: string
-      responses:
-        "200":
-          description: "Post created"
-        "400":
-          description: "Invalid input"
-    get:
-      summary: "Get list of posts"
-      operationId: "getPosts"
-      responses:
-        "200":
-          description: "A list of posts"
+      post:
+        summary: "Create post"
+        operationId: "createPost"
+        requestBody:
+          required: true
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  posts:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        userId:
-                          type: integer
-                        content:
-                          type: string
-                        createdAt:
-                          type: string
-                          format: date-time
-                        updatedAt:
-                          type: string
-                          format: date-time
+                  userId:
+                    type: integer
+                  content:
+                    type: string
+                  category:
+                    type: string
+        responses:
+          "200":
+            description: "Post created"
+          "400":
+            description: "Invalid input"
+      get:
+        summary: "Get list of posts"
+        operationId: "getPosts"
+        responses:
+          "200":
+            description: "A list of posts"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    posts:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          userId:
+                            type: integer
+                          content:
+                            type: string
+                          category:
+                            type: string
+                          createdAt:
+                            type: string
+                            format: date-time
+                          updatedAt:
+                            type: string
+                            format: date-time
   /posts/{postId}:
     get:
       summary: "Get post details"
@@ -206,28 +210,27 @@ paths:
       responses:
         "200":
           description: "Post details"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  userId:
+                    type: integer
+                  content:
+                    type: string
+                  category:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
         "404":
           description: "Post not found"
-  /likes:
-    post:
-      summary: "Like a post"
-      operationId: "likePost"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                userId:
-                  type: integer
-                postId:
-                  type: integer
-      responses:
-        "200":
-          description: "Post liked"
-        "400":
-          description: "Invalid input"
   /replys:
     post:
       summary: "Reply to a post"

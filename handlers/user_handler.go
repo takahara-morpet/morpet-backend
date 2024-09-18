@@ -12,12 +12,20 @@ import (
 
 func GetUserById(c echo.Context) error {
 	id := c.Param("id")
+
+	// サービス層からユーザーを取得
 	user, err := services.GetUserById(id)
 	if err != nil {
-		return fmt.Errorf("error getting user: %s", err)
+		// エラーの種類に応じて適切なレスポンスを返す
+		if err.Error() == "user not found" {
+			return c.JSON(http.StatusNotFound, map[string]string{"error": "User not found"})
+		}
+		// その他のエラーの場合は、500 Internal Server Error を返す
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Internal Server Error"})
 	}
-	return c.JSON(http.StatusOK, user)
 
+	// 正常な場合、ユーザー情報を JSON で返す
+	return c.JSON(http.StatusOK, user)
 }
 
 func GetUsers(c echo.Context) error {
