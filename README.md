@@ -74,6 +74,7 @@
 │   └── init
 │       └── 01_initialize.sql  # PostgreSQL 初期化用 SQL ファイル
 └── db-data                    # PostgreSQL のデータ永続化ディレクトリ
+```
 
 ```
 docker compose up -d
