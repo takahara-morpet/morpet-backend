@@ -156,7 +156,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  user_id:
+                  userId:
                     type: integer
                   content:
                     type: string
@@ -185,7 +185,7 @@ paths:
                         properties:
                           id:
                             type: integer
-                          user_id:
+                          userId:
                             type: integer
                           content:
                             type: string
@@ -217,7 +217,7 @@ paths:
                 properties:
                   id:
                     type: integer
-                  user_id:
+                  userId:
                     type: integer
                   content:
                     type: string

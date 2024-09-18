@@ -15,4 +15,8 @@ func InitRoutes(e *echo.Echo) {
 	e.POST("/replys", handlers.CreateReply)
 	e.GET("/replys/:id", handlers.GetReplyById)
 	e.GET("/replys", handlers.GetReplys)
+
+	e.GET("/posts", handlers.GetPosts)
+	e.GET("/posts/:id", handlers.GetPostById)
+	e.POST("/posts", handlers.CreatePost)
 }
