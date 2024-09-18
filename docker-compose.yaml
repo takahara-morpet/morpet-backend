@@ -9,3 +9,14 @@ services:
       - ./api-document.yaml:/api/api-document.yaml:ro
     ports:
       - "127.0.0.1:8000:8080"
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: "me"
+      POSTGRES_DB: "development"
+      POSTGRES_HOST_AUTH_METHOD: "trust" # パスワードなしで接続許可（非推奨）
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d
+      - ./db-data:/var/lib/postgresql/data
