@@ -10,6 +10,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func GetUserById(c echo.Context) error {
+	id := c.Param("id")
+	user, err := services.GetUserById(id)
+	if err != nil {
+		return fmt.Errorf("error getting user: %s", err)
+	}
+	return c.JSON(http.StatusOK, user)
+
+}
+
 func GetUsers(c echo.Context) error {
 	users, err := services.GetAllUsers()
 	if err != nil {

@@ -8,6 +8,7 @@ import (
 
 func InitRoutes(e *echo.Echo) {
 	e.GET("/users", handlers.GetUsers)
-	e.POST("/user", handlers.CreateUser)
+	e.POST("/users", handlers.CreateUser)
 	e.PUT("/users/:id", handlers.UpdateUser)
+	e.GET("/users/:id", handlers.GetUserById)
 }

@@ -23,7 +23,7 @@ paths:
                   default: 20
                 profile:
                   type: string
-                profile_image_url:
+                profileImageUrl:
                   type: string
                 gender:
                   type: string
@@ -58,19 +58,58 @@ paths:
                           type: integer
                         profile:
                           type: string
-                        profile_image_url:
+                        profileImageUrl:
                           type: string
                         gender:
                           type: string
                         mbti:
                           type: string
-                        created_at:
+                        createdAt:
                           type: string
                           format: date-time
-                        updated_at:
+                        updatedAt:
                           type: string
                           format: date-time
   /users/{userId}:
+    get:
+      summary: "Get user by ID"
+      operationId: "getUserById"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "User details"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  age:
+                    type: integer
+                  profile:
+                    type: string
+                  profileImageUrl:
+                    type: string
+                  gender:
+                    type: string
+                  mbti:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+        "404":
+          description: "User not found"
     put:
       summary: "Update user profile"
       operationId: "updateUser"
@@ -93,7 +132,7 @@ paths:
                   type: integer
                 profile:
                   type: string
-                profile_image_url:
+                profileImageUrl:
                   type: string
                 gender:
                   type: string
@@ -117,7 +156,7 @@ paths:
             schema:
               type: object
               properties:
-                user_id:
+                userId:
                   type: integer
                 content:
                   type: string
@@ -144,14 +183,14 @@ paths:
                       properties:
                         id:
                           type: integer
-                        user_id:
+                        userId:
                           type: integer
                         content:
                           type: string
-                        created_at:
+                        createdAt:
                           type: string
                           format: date-time
-                        updated_at:
+                        updatedAt:
                           type: string
                           format: date-time
   /posts/{postId}:
@@ -180,9 +219,9 @@ paths:
             schema:
               type: object
               properties:
-                user_id:
+                userId:
                   type: integer
-                post_id:
+                postId:
                   type: integer
       responses:
         "200":
@@ -200,9 +239,9 @@ paths:
             schema:
               type: object
               properties:
-                sender_id:
+                senderId:
                   type: integer
-                post_id:
+                postId:
                   type: integer
                 content:
                   type: string
@@ -229,12 +268,12 @@ paths:
                       properties:
                         id:
                           type: integer
-                        sender_id:
+                        senderId:
                           type: integer
-                        post_id:
+                        postId:
                           type: integer
                         content:
                           type: string
-                        sent_at:
+                        sentAt:
                           type: string
                           format: date-time
