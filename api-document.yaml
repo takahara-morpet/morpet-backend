@@ -5,6 +5,27 @@ info:
 servers:
   - url: http://localhost:8080/
 paths:
+  /user:
+    post:
+      summary: "Create user"
+      operationId: "createUser"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: int
+                  default: 20
+      responses:
+        "200":
+          description: "User created"
+        "400":
+          description: "Invalid input"
   /users:
     get:
       summary: "Get list of users"
@@ -28,3 +49,30 @@ paths:
                           type: string
                         status:
                           type: string
+  /users/{userId}:
+    put:
+      summary: "Update user status"
+      operationId: "updateUser"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                age:
+                  type: int
+                  default: 20
+      responses:
+        "200":
+          description: "User updated"
+        "400":
+          description: "Invalid input"
+        "404":
+          description: "User not found"
