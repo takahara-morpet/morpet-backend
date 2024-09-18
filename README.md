@@ -54,6 +54,40 @@
    ブラウザで以下にアクセス：
    http://localhost:8080/users
 
+# Docker Compose を使用した PostgreSQL と Swagger UI のセットアップ
+
+このプロジェクトでは、Docker Compose を使用して PostgreSQL と Swagger UI をセットアップします。以下の手順に従って環境を構築してください。
+
+## DockerでのPostgres
+
+以下のツールがインストールされていることを確認してください：
+
+- [Docker](https://docs.docker.com/get-docker/)
+## プロジェクト構成
+
+このプロジェクト内の重要なファイルとディレクトリは以下の通りです：
+
+```plaintext
+.
+├── docker-compose.yaml        # Docker Compose 設定ファイル
+├── db
+│   └── init
+│       └── 01_initialize.sql  # PostgreSQL 初期化用 SQL ファイル
+└── db-data                    # PostgreSQL のデータ永続化ディレクトリ
+
+```
+docker compose up -d
+```
+で立ち上げ
+
+```
+docker compose down -v
+```
+でvolumeごとコンテナを削除できます。
+
+### エラー対処
+https://qiita.com/zazaza/items/75bcd0f2ab4a5acb8343
+
 ## API 仕様
 
 API 仕様は SwaggerUI を利用して閲覧します。
