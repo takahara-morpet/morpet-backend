@@ -41,14 +41,19 @@ func GetUsers(c echo.Context) error {
 
 func CreateUser(c echo.Context) error {
 	req := &dto.CreateUserRequest{}
+	// リクエストボディをバインド
 	if err := c.Bind(req); err != nil {
 		return err
 	}
-	if err := services.CreateUser(req); err != nil {
-		return fmt.Errorf("ユーザの作成に失敗しました:%s", err)
-	}
-	return c.NoContent(http.StatusOK)
 
+	// ユーザーを作成し、そのIDを取得
+	userID, err := services.CreateUser(req)
+	if err != nil {
+		return fmt.Errorf("ユーザの作成に失敗しました: %s", err)
+	}
+
+	// 成功時にはユーザーのIDを返す
+	return c.JSON(http.StatusOK, userID)
 }
 
 func UpdateUser(c echo.Context) error {
