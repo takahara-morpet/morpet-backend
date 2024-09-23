@@ -26,6 +26,35 @@ func GetReplyById(id string) (models.Reply, error) {
 	}
 	return reply, nil
 }
+func GetRepliesByPostID(postID string) ([]models.Reply, error) {
+	query := `
+	SELECT id, post_id, sender_id, content, created_at, updated_at
+	FROM replys
+	WHERE post_id = $1
+	`
+
+	rows, err := config.DB.Query(query, postID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query replies: %w", err)
+	}
+	defer rows.Close()
+
+	var replies []models.Reply
+	for rows.Next() {
+		var reply models.Reply
+		if err := rows.Scan(
+			&reply.ID, &reply.PostID, &reply.SenderID, &reply.Content, &reply.CreatedAt, &reply.UpdatedAt); err != nil {
+			return nil, fmt.Errorf("failed to scan reply: %w", err)
+		}
+		replies = append(replies, reply)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows iteration error: %w", err)
+	}
+
+	return replies, nil
+}
 
 func GetAllReplys() ([]models.Reply, error) {
 	query := `
