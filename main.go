@@ -9,7 +9,6 @@ import (
 
 	"log"
 	"os"
-	"net/http"
 )
 
 func main() {
@@ -33,7 +32,7 @@ func main() {
 
     // Start the server
     log.Printf("Starting server on port %s", port)
-    if err := http.ListenAndServe(":"+port, nil); err != nil {
+    if err := e.Start(":"+port); err != nil {
         log.Fatalf("Failed to start server: %v", err)
     }
 }

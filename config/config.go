@@ -11,14 +11,12 @@ import (
 var DB *sql.DB
 
 func InitDB() {
-	var err error
-
 	dbURL := os.Getenv("DATABASE_URL")
     if dbURL == "" {
-        // Fallback to local development settings
-        dbURL = "postgres://me@db:5432/development?sslmode=disable"
+        dbURL = "host=db user=me dbname=development sslmode=disable port=5432"
     }
 
+	var err error
 	DB, err = sql.Open("postgres", dbURL)
 
 	if err != nil {
@@ -26,9 +24,9 @@ func InitDB() {
 	}
 
 	if err := DB.Ping(); err != nil {
-		log.Fatal("Databse connetction error", err)
+		log.Fatal("Database connetction error", err)
 	}
-	log.Println("Databse connected")
+	log.Println("Database connected")
 }
 
 func CloseDB() {
