@@ -3,6 +3,7 @@ package config
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -11,8 +12,14 @@ var DB *sql.DB
 
 func InitDB() {
 	var err error
-	connStr := "host=db user=me dbname=development sslmode=disable port=5432"
-	DB, err = sql.Open("postgres", connStr)
+
+	dbURL := os.Getenv("DATABASE_URL")
+    if dbURL == "" {
+        // Fallback to local development settings
+        dbURL = "postgres://me@db:5432/development?sslmode=disable"
+    }
+
+	DB, err = sql.Open("postgres", dbURL)
 
 	if err != nil {
 		log.Fatal("Failed to connect DB", err)
