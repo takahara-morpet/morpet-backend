@@ -18,13 +18,13 @@ RUN go mod download
 COPY . .
 
 # アプリケーションをビルド
-RUN go build -o main .
+RUN apk add --no-cache postgresql-client && \
+    go build -o main .
 
 # wait-Script
 COPY wait-for-db.sh /wait-for-db.sh
 RUN chmod +x /wait-for-db.sh
 ENTRYPOINT ["/wait-for-db.sh"]
-
 
 # ポートを指定（アプリケーションで使用するポート）
 EXPOSE 8080
