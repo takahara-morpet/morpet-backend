@@ -6,6 +6,10 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"log"
+	"os"
+	"net/http"
 )
 
 func main() {
@@ -19,11 +23,16 @@ func main() {
 		AllowOrigins: []string{"http://localhost:8000", "http://localhost:3000"},
 		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
 	}))
-	// e.GET("/", func(c echo.Context) error {
-	// 	return c.String(http.StatusOK, "Hello, World!")
-	// })
-	// e.GET("/users", handlers.GetUsers)
 	routes.InitRoutes(e)
 
-	e.Logger.Fatal(e.Start(":8080"))
+	port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080" // Default port if not set
+    }
+
+    // Start the server
+    log.Printf("Starting server on port %s", port)
+    if err := http.ListenAndServe(":"+port, nil); err != nil {
+        log.Fatalf("Failed to start server: %v", err)
+    }
 }
