@@ -20,4 +20,5 @@ func InitRoutes(e *echo.Echo) {
 	e.GET("/posts", handlers.GetPosts)
 	e.GET("/posts/:id", handlers.GetPostById)
 	e.POST("/posts", handlers.CreatePost)
+	e.PUT("/posts/:id/percentage", handlers.UpdatePostPercentage)
 }
