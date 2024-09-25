@@ -62,9 +62,10 @@ func CreateReply(c echo.Context) error {
 	if err := c.Bind(req); err != nil {
 		return err
 	}
-	if _, err := services.CreateReply(req); err != nil {
+	replyID, err := services.CreateReply(req)
+	if err != nil {
 		return fmt.Errorf("replyの作成に失敗しました:%s", err)
 	}
-	return c.NoContent(http.StatusOK)
+	return c.JSON(http.StatusOK, replyID)
 
 }
