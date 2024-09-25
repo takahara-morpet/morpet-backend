@@ -1,0 +1,17 @@
+# heroku.yml
+version: '3'
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+    command:
+      - ./main
+    ports:
+      - "8080"
+  db:
+    build:
+      dockerfile: Dockerfile.db
+    command:
+      - postgres
+    ports:
+      - "5432"

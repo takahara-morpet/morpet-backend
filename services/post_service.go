@@ -10,7 +10,7 @@ import (
 
 func GetPostById(id string) (models.Post, error) {
 	query := `
-		SELECT id, user_id, content, category, created_at, updated_at
+		SELECT id, user_id, content, category, male_percentage, female_percentage, created_at, updated_at
 		FROM posts
 		WHERE id = $1
 	`
@@ -19,17 +19,19 @@ func GetPostById(id string) (models.Post, error) {
 
 	var post models.Post
 	if err := row.Scan(
-		&post.ID, &post.UserID, &post.Content, &post.Category, &post.CreatedAt, &post.UpdatedAt); err != nil {
+		&post.ID, &post.UserID, &post.Content, &post.Category,
+		&post.MalePercentage, &post.FemalePercentage, &post.CreatedAt, &post.UpdatedAt); err != nil {
 		if err == sql.ErrNoRows {
-			return models.Post{}, fmt.Errorf("reply not post")
+			return models.Post{}, fmt.Errorf("post not found")
 		}
 		return models.Post{}, fmt.Errorf("failed to scan post: %w", err)
 	}
 	return post, nil
 }
+
 func GetAllPosts() ([]models.Post, error) {
 	query := `
-		SELECT id, user_id, content, category, created_at, updated_at
+		SELECT id, user_id, content, category, male_percentage, female_percentage, created_at, updated_at
 		FROM posts
 	`
 
@@ -42,17 +44,19 @@ func GetAllPosts() ([]models.Post, error) {
 	var posts []models.Post
 	for rows.Next() {
 		var post models.Post
-		if err := rows.Scan(&post.ID, &post.UserID, &post.Content, &post.Category, &post.CreatedAt, &post.UpdatedAt); err != nil {
+		if err := rows.Scan(&post.ID, &post.UserID, &post.Content, &post.Category,
+			&post.MalePercentage, &post.FemalePercentage, &post.CreatedAt, &post.UpdatedAt); err != nil {
 			return nil, fmt.Errorf("failed to scan post: %w", err)
 		}
 		posts = append(posts, post)
 	}
 	return posts, nil
 }
+
 func CreatePost(post *dto.CreatePostRequest) (int, error) {
 	query := `
-		INSERT INTO posts (user_id, content, category, created_at, updated_at)
-		VALUES ($1, $2, $3, NOW(), NOW())
+		INSERT INTO posts (user_id, content, category, male_percentage, female_percentage, created_at, updated_at)
+		VALUES ($1, $2, $3, 50, 50, NOW(), NOW())
 		RETURNING id
 	`
 
@@ -62,4 +66,18 @@ func CreatePost(post *dto.CreatePostRequest) (int, error) {
 		return 0, fmt.Errorf("failed to create post: %w", err)
 	}
 	return postID, nil
+}
+
+func UpdatePostPercentage(postID string, malePercentage int, femalePercentage int) error {
+	query := `
+		UPDATE posts
+		SET male_percentage = $1, female_percentage = $2, updated_at = NOW()
+		WHERE id = $3
+	`
+
+	_, err := config.DB.Exec(query, malePercentage, femalePercentage, postID)
+	if err != nil {
+		return fmt.Errorf("failed to update percentages: %w", err)
+	}
+	return nil
 }

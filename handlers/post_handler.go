@@ -16,15 +16,12 @@ func GetPostById(c echo.Context) error {
 	// サービス層からポストを取得
 	post, err := services.GetPostById(id)
 	if err != nil {
-		// エラーの種類に応じて適切なレスポンスを返す
 		if err.Error() == "post not found" {
 			return c.JSON(http.StatusNotFound, map[string]string{"error": "Post not found"})
 		}
-		// その他のエラーの場合は、500 Internal Server Error を返す
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Internal Server Error"})
 	}
 
-	// 正常な場合、ポスト情報を JSON で返す
 	return c.JSON(http.StatusOK, post)
 }
 
@@ -38,6 +35,7 @@ func GetPosts(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, posts)
 }
+
 func CreatePost(c echo.Context) error {
 	req := &dto.CreatePostRequest{}
 	if err := c.Bind(req); err != nil {
@@ -49,6 +47,33 @@ func CreatePost(c echo.Context) error {
 		return fmt.Errorf("postの作成に失敗しました: %s", err)
 	}
 
-	// 成功時にはステータスコード 200 を返す
+	return c.NoContent(http.StatusOK)
+}
+
+func UpdatePostPercentage(c echo.Context) error {
+	type PercentageUpdateRequest struct {
+		MalePercentage   int `json:"malePercentage"`
+		FemalePercentage int `json:"femalePercentage"`
+	}
+
+	postID := c.Param("id")
+
+	var req = &PercentageUpdateRequest{}
+	if err := c.Bind(req); err != nil {
+		log.Printf("Request body binding failed: %v", err)
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request body"})
+	}
+
+	// パーセンテージのデータが正しく受け取れているかログに出力
+	log.Printf("Received data - Male: %d, Female: %d\n", req.MalePercentage, req.FemalePercentage)
+
+	err := services.UpdatePostPercentage(postID, req.MalePercentage, req.FemalePercentage)
+	if err != nil {
+		log.Printf("Failed to update percentages: %v", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "Failed to update percentages",
+		})
+	}
+
 	return c.NoContent(http.StatusOK)
 }

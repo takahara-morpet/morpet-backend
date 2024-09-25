@@ -23,6 +23,7 @@ func main() {
 		AllowOrigins: []string{"http://localhost:8000", "http://localhost:3000"},
 		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
 	}))
+
 	routes.InitRoutes(e)
 
 	port := os.Getenv("PORT")
