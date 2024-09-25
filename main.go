@@ -16,7 +16,7 @@ func main() {
 	e := echo.New()
 	// swaggerだけ許可されるようにしている
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:8000"},
+		AllowOrigins: []string{"http://localhost:8000", "http://localhost:3000"},
 		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
 	}))
 	// e.GET("/", func(c echo.Context) error {

@@ -54,20 +54,22 @@ func GetAllUsers() ([]models.User, error) {
 	return users, nil
 }
 
-func CreateUser(req *dto.CreateUserRequest) error {
+func CreateUser(req *dto.CreateUserRequest) (int64, error) {
 	query := `
 		INSERT INTO users (name, age, profile, profile_image_url, gender, mbti, created_at, updated_at) 
 		VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
+		RETURNING id
 	`
 
-	// クエリを実行し、エラーハンドリング
-	_, err := config.DB.Exec(query, req.Name, req.Age, req.Profile, req.ProfileImageUrl, req.Gender, req.Mbti)
+	var userID int64
+	// クエリを実行し、挿入されたユーザーのIDを取得
+	err := config.DB.QueryRow(query, req.Name, req.Age, req.Profile, req.ProfileImageUrl, req.Gender, req.Mbti).Scan(&userID)
 	if err != nil {
 		log.Printf("Failed to create user: %v", err)
-		return fmt.Errorf("failed to create user: %w", err)
+		return 0, fmt.Errorf("failed to create user: %w", err)
 	}
 
-	return nil
+	return userID, nil
 }
 
 func UpdateUser(id string, req *dto.UpdateUserRequest) error {
