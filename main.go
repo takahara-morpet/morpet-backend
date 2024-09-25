@@ -19,9 +19,15 @@ func main() {
 	e := echo.New()
 	// swaggerだけ許可されるようにしている
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:8000", "http://localhost:3000"},
-		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
+        AllowOrigins: []string{
+			"https://morpet-frontend.vercel.app",
+			"http://localhost:8000",
+			"http://localhost:3000",
+		},
+        AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE, echo.OPTIONS},
+        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
+	
 
 	routes.InitRoutes(e)
 
