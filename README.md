@@ -20,7 +20,7 @@
 2. **Go サーバーの起動**
 
    ```bash
-   go run morpet.go
+   go run main.go
    ```
 
 3. **PostgreSQL にログイン**
